@@ -4,7 +4,8 @@
   "description": "A chrome extension that lets you talk back to your Google Keep Notes.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack/webpack.config.js"
   },
   "repository": {
     "type": "git",
