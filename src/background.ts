@@ -30,6 +30,7 @@ function scrapeNotes(): any {
     var endingIndex = res.indexOf('}]\')', startingIndex) + 2;
     res = res.substring(startingIndex, endingIndex);
 
+
     // parse and return the JSON object (here, an array of notes data)
     return JSON.parse(res);
 }
@@ -52,6 +53,7 @@ chrome.action.onClicked.addListener((tab) => {
 
         // traverse the JSON array to extract the notes
         var text = '';
+
         for (var i = 0; i < json.length; i++) {
             var obj = json[i];
 
@@ -80,6 +82,55 @@ chrome.action.onClicked.addListener((tab) => {
         // this value will later be sent to the AI21 API for content generation
         console.log(text);
 
+        var precontext = 'Using the given text as Context, answer the following question: \n'
+        var question = 'When was the surprise meeting was called?';
+
+        var entireText = precontext + 'Context:' + text + '\nQuestion:' + question + '\nAnswer:';
+
+        var response = fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
+            headers: {
+                "Authorization": "Bearer JdxxIF1HH1XX3ZtUeLmCREMXKyi3e9Mk",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "prompt": entireText,
+                "numResults": 1,
+                "maxTokens": 200,
+                "temperature": 0.7,
+                "topKReturn": 0,
+                "topP": 1,
+                "countPenalty": {
+                    "scale": 0,
+                    "applyToNumbers": false,
+                    "applyToPunctuations": false,
+                    "applyToStopwords": false,
+                    "applyToWhitespaces": false,
+                    "applyToEmojis": false
+                },
+                "frequencyPenalty": {
+                    "scale": 0,
+                    "applyToNumbers": false,
+                    "applyToPunctuations": false,
+                    "applyToStopwords": false,
+                    "applyToWhitespaces": false,
+                    "applyToEmojis": false
+                },
+                "presencePenalty": {
+                    "scale": 0,
+                    "applyToNumbers": false,
+                    "applyToPunctuations": false,
+                    "applyToStopwords": false,
+                    "applyToWhitespaces": false,
+                    "applyToEmojis": false
+                },
+                "stopSequences": []
+            }),
+            method: "POST"
+        }).then((response) => {
+            return response.json();
+        }).then((respString) => {
+            console.log(respString.completions[0].data.text);
+        });
         return;
     });
 });
