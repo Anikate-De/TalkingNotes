@@ -3,7 +3,12 @@
     "description": "A chrome extension that lets you talk back to your Google Keep Notes.",
     "version": "1.0",
     "manifest_version": 3,
-    "action": {},
+    
+    "action": {
+      "default_popup": "index.html",
+      "default_title": "Talking Notes"
+    },
+
     "permissions": [
        "activeTab",
        "scripting"
