@@ -26,8 +26,8 @@ function scrapeNotes(): any {
 
     // the following code extracts only the useful portions from the results
     // this is done to create a JSON Object that will be used to traverse the notes
-    var startingIndex = res.lastIndexOf('loadChunk(JSON.parse(') + 22;
-    var endingIndex = res.lastIndexOf('\"snapshot\":{}}}]') + 16;
+    var startingIndex = res.indexOf('loadChunk(JSON.parse(') + 22;
+    var endingIndex = res.indexOf('}]\')', startingIndex) + 2;
     res = res.substring(startingIndex, endingIndex);
 
     // parse and return the JSON object (here, an array of notes data)
