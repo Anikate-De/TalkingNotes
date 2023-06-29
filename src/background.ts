@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 // function that decodes the escape sequence in the notes
 function decodeEscapeSequence(str: string): string {
 
@@ -104,7 +102,7 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", async
         // send the request to the AI21 API
         fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
             headers: {
-                "Authorization": "Bearer .env.API_KEY",
+                "Authorization": "Bearer " + process.env.API_KEY,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({

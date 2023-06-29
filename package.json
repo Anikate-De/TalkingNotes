@@ -26,8 +26,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "os-browserify": "^0.3.0",
-    "path-browserify": "^1.0.1"
+    "dotenv": "^16.3.1"
   }
 }

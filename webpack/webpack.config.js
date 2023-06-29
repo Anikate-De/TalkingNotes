@@ -1,4 +1,6 @@
 const path = require('path');
+const webpack = require('webpack')
+require('dotenv').config();
 const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
    mode: "production",
@@ -11,7 +13,6 @@ module.exports = {
    },
    resolve: {
       extensions: [".ts", ".js"],
-       
    },
    module: {
       rules: [
@@ -24,7 +25,10 @@ module.exports = {
    },
    plugins: [
       new CopyPlugin({
-         patterns: [{from: ".", to: ".", context: "public"}]
+         patterns: [{ from: ".", to: ".", context: "public" }]
+      }),
+      new webpack.DefinePlugin({
+         'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
       }),
    ],
 };
