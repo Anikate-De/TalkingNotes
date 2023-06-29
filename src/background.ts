@@ -35,12 +35,18 @@ function scrapeNotes(): any {
     return JSON.parse(res);
 }
 
-// add an onTap listener to test the extension's functionality
-// this will later be replaced with a popup for user interaction
-chrome.action.onClicked.addListener((tab) => {
+document.getElementsByTagName('input')[0].addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
+    }
+});
 
+document.getElementsByClassName("sendButton")[0].addEventListener("click", async (event) => {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
     chrome.scripting.executeScript({
-        target: { tabId: tab.id ? tab.id : -1 },
+        target: { tabId: tab.id ?? -1 },
         func: scrapeNotes,
         args: []
     }).then(result => {
@@ -83,11 +89,18 @@ chrome.action.onClicked.addListener((tab) => {
         console.log(text);
 
         var precontext = 'Using the given text as Context, answer the following question: \n'
-        var question = 'When was the surprise meeting was called?';
+        var question = (document.getElementsByTagName('input')[0] as HTMLInputElement).value.trim();
 
         var entireText = precontext + 'Context:' + text + '\nQuestion:' + question + '\nAnswer:';
 
-        var response = fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
+        // configure the UI to show the conversational view
+        document.getElementsByClassName("initial-content")[0].classList.add("hidden");
+        document.getElementsByClassName("conversation-content")[0].classList.remove("hidden");
+        document.getElementById("question-text")!.innerHTML = question;
+        document.getElementById("answer-text")!.innerHTML = "Loading...";
+
+        // send the request to the AI21 API
+        fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
             headers: {
                 "Authorization": "Bearer JdxxIF1HH1XX3ZtUeLmCREMXKyi3e9Mk",
                 "Content-Type": "application/json"
@@ -129,7 +142,9 @@ chrome.action.onClicked.addListener((tab) => {
         }).then((response) => {
             return response.json();
         }).then((respString) => {
-            console.log(respString.completions[0].data.text);
+            var answer = respString.completions[0].data.text;
+            console.log(answer);
+            document.getElementById("answer-text")!.innerHTML = answer;
         });
         return;
     });
