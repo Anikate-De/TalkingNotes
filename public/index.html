@@ -9,12 +9,41 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <div class="question-controls">
+    <div class="initial-content card">
+        <img src="assets/notes.svg" alt="Robot Face" xmlns="http://www.w3.org/2000/svg" id="hero-image">
+        <h1>Welcome to <strong>Talking Notes</strong></h1>
+        <p>Give all your notes and thoughts a mind of their own.</p>
+        <p><em>Type a question below to start a quick conversation.</em></p>
+    </div>
+
+    <div class="conversation-content card hidden">
+        <div class="header">
+            <img src="assets/notes.svg" alt="Robot Face" xmlns="http://www.w3.org/2000/svg" id="hero-image"
+                class="small">
+            <h1><strong>Talking Notes</strong></h1>
+        </div>
+
+        <div class="hr-border"></div>
+
+        <div class="bubble question-bubble">
+            <strong>
+                <p id="question-text">Can you please give me a brief summary of what I did on 29th May?</p>
+            </strong>
+        </div>
+        <div class="bubble answer-bubble">
+            <p id="answer-text">
+                On 29th May, you made a few friends who provided good and cheerful company. Sudha is a trustworthy
+                friend, Ramini is fond of gossiping, and Komal is one year senior to you.
+            </p>
+        </div>
+    </div>
+
+    <div class="question-controls card">
 
         <label for="input" class="searchLabel">
             <svg xmlns="http://www.w3.org/2000/svg" class="searchIcon icon" viewBox="0 0 512 512">
