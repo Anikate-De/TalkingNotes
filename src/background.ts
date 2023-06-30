@@ -7,8 +7,8 @@ function decodeEscapeSequence(str: string): string {
     });
 };
 
-// function that scrapes the notes from the page
-function scrapeNotes(): any {
+// function that scrapes the notes from the Google Keep webpage
+function scrapeGoogleKeep(): any {
     var res: string = '';
     var all = document.getElementsByTagName("*");
 
@@ -31,121 +31,53 @@ function scrapeNotes(): any {
     res = res.substring(startingIndex, endingIndex);
 
 
-    // parse and return the JSON object (here, an array of notes data)
-    return JSON.parse(res);
-}
+    // parse the JSON object (here, an array of notes data)
+    var json = JSON.parse(res);
 
-document.getElementsByTagName('input')[0].addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
-    }
-});
+    // traverse the JSON array to extract the notes
+    var text = '';
 
-document.getElementsByClassName("sendButton")[0].addEventListener("click", async (event) => {
-    let queryOptions = { active: true, lastFocusedWindow: true };
-    let [tab] = await chrome.tabs.query(queryOptions);
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id ?? -1 },
-        func: scrapeNotes,
-        args: []
-    }).then(result => {
+    for (var i = 0; i < json.length; i++) {
+        var obj = json[i];
 
-        // handle the result from scrape notes
-        var json = result[0].result;
+        // check if the note is a text note
+        if (obj.text) {
 
-        // log the root JSON array to the console for debugging
-        console.log(json);
-
-        // traverse the JSON array to extract the notes
-        var text = '';
-
-        for (var i = 0; i < json.length; i++) {
-            var obj = json[i];
-
-            // check if the note is a text note
-            if (obj.text) {
-
-                // if the current NODE has a parent NODE (i.e., a NODE for the title)
-                // then traverse the JSON array to find the corresponding title and add it to the result
-                if (obj.parentServerId) {
-                    for (var j = 0; j < json.length; j++) {
-                        if (json[j].serverId == obj.parentServerId) {
-                            if (json[j].title.trim() != '') {
-                                text += json[j].title + ': ';
-                            }
+            // if the current NODE has a parent NODE (i.e., a NODE for the title)
+            // then traverse the JSON array to find the corresponding title and add it to the result
+            if (obj.parentServerId) {
+                for (var j = 0; j < json.length; j++) {
+                    if (json[j].serverId == obj.parentServerId) {
+                        if (json[j].title.trim() != '') {
+                            text += json[j].title + ': ';
                         }
                     }
                 }
-
-                // add the text to the result
-                text += obj.text.trim() + '\n';
             }
+
+            // add the text to the result
+            text += obj.text.trim() + '\n';
         }
-        text = text.trim();
+    }
 
-        // log the plaintext result to the console for debugging
-        // this value will later be sent to the AI21 API for content generation
-        console.log(text);
+    // return the final plaintext result
+    return text.trim();
+}
 
-        var precontext = 'Using the given text as Context, answer the following question: \n'
-        var question = (document.getElementsByTagName('input')[0] as HTMLInputElement).value.trim();
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    (async function () {
+        if (request.message === "scrapeGoogleKeep") {
+            let queryOptions = { active: true, lastFocusedWindow: true };
+            let [tab] = await chrome.tabs.query(queryOptions);
 
-        var entireText = precontext + 'Context:' + text + '\nQuestion:' + question + '\nAnswer:';
+            var resp = await chrome.scripting.executeScript({
+                target: { tabId: tab.id ?? -1 },
+                func: scrapeGoogleKeep,
+                args: []
+            })
 
-        // configure the UI to show the conversational view
-        document.getElementsByClassName("initial-content")[0].classList.add("hidden");
-        document.getElementsByClassName("conversation-content")[0].classList.remove("hidden");
-        document.getElementById("question-text")!.innerHTML = question;
-        document.getElementById("answer-text")!.innerHTML = "Loading...";
-
-        // send the request to the AI21 API
-        fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
-            headers: {
-                "Authorization": "Bearer " + process.env.API_KEY,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "prompt": entireText,
-                "numResults": 1,
-                "maxTokens": 200,
-                "temperature": 0.7,
-                "topKReturn": 0,
-                "topP": 1,
-                "countPenalty": {
-                    "scale": 0,
-                    "applyToNumbers": false,
-                    "applyToPunctuations": false,
-                    "applyToStopwords": false,
-                    "applyToWhitespaces": false,
-                    "applyToEmojis": false
-                },
-                "frequencyPenalty": {
-                    "scale": 0,
-                    "applyToNumbers": false,
-                    "applyToPunctuations": false,
-                    "applyToStopwords": false,
-                    "applyToWhitespaces": false,
-                    "applyToEmojis": false
-                },
-                "presencePenalty": {
-                    "scale": 0,
-                    "applyToNumbers": false,
-                    "applyToPunctuations": false,
-                    "applyToStopwords": false,
-                    "applyToWhitespaces": false,
-                    "applyToEmojis": false
-                },
-                "stopSequences": []
-            }),
-            method: "POST"
-        }).then((response) => {
-            return response.json();
-        }).then((respString) => {
-            var answer = respString.completions[0].data.text;
-            console.log(answer);
-            document.getElementById("answer-text")!.innerHTML = answer;
-        });
-        return;
-    });
+            sendResponse(resp[0].result);
+        }
+    })();
+    return true;
 });
