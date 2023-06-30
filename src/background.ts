@@ -64,9 +64,12 @@ function scrapeGoogleKeep(): any {
     return text.trim();
 }
 
+// function that scrapes the notes from the Google Keep webpage
+// listens for messages from the popup, i.e., when the user clicks on the submit button
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    (async function () {
-        if (request.message === "scrapeGoogleKeep") {
+    if (request.message === "scrapeGoogleKeep") {
+        (async function () {
+
             let queryOptions = { active: true, lastFocusedWindow: true };
             let [tab] = await chrome.tabs.query(queryOptions);
 
@@ -74,10 +77,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 target: { tabId: tab.id ?? -1 },
                 func: scrapeGoogleKeep,
                 args: []
-            })
+            });
 
             sendResponse(resp[0].result);
-        }
-    })();
-    return true;
+        })();
+
+        // return true to indicate that the response will be sent asynchronously
+        return true;
+    } else if (request.message === "popupOpened") {
+        (async function () {
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                sendResponse({ onGoogleKeep: tabs[0].url?.includes("keep.google.com") });
+            });
+        })();
+
+        // return true to indicate that the response will be sent asynchronously
+        return true;
+    }
 });

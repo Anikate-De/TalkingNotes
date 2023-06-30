@@ -1,4 +1,22 @@
-let text = '';
+// sends a message to the background script to check if the user is on Google Keep
+// this is fired as soon as the popup is opened
+chrome.runtime.sendMessage({
+    message: "popupOpened"
+}, (response) => {
+
+    // display the appropriate UI based on the response
+    if (response.onGoogleKeep) {
+        document.getElementsByClassName("initial-content")[0].classList.remove("hidden");
+        document.getElementsByClassName("conversation-content")[0].classList.add("hidden");
+        document.getElementsByClassName("error-content")[0].classList.add("hidden");
+        document.getElementsByClassName("question-controls")[0].classList.remove("hidden");
+    } else {
+        document.getElementsByClassName("initial-content")[0].classList.add("hidden");
+        document.getElementsByClassName("conversation-content")[0].classList.add("hidden");
+        document.getElementsByClassName("error-content")[0].classList.remove("hidden");
+        document.getElementsByClassName("question-controls")[0].classList.add("hidden");
+    }
+});
 
 document.getElementsByTagName('input')[0].addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
@@ -68,6 +86,8 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
             }).then((response) => {
                 return response.json();
             }).then((respString) => {
+
+                // update the UI with the answer
                 var answer = respString.completions[0].data.text;
                 document.getElementById("answer-text")!.innerHTML = answer;
             });
