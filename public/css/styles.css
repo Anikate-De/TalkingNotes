@@ -175,6 +175,7 @@ strong {
 
 .answer-bubble {
     align-self: flex-start;
+    margin-right: 12px;
 }
 
 .answer-bubble:after {
@@ -197,4 +198,39 @@ strong {
     width: 100px;
     height: 100px;
     font-size: 100px !important;
+}
+
+.regenerate-button {
+    padding: 6px 12px;
+    height: 34px;
+    border: none;
+    background: #afe1af8b;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.regenerate-button:hover {
+    background: #afe1afdd;
+}
+
+.regenerate-button:hover .svg-icon {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+.answer-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
 }

@@ -42,6 +42,7 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
             document.getElementsByClassName("conversation-content")[0].classList.remove("hidden");
             document.getElementById("question-text")!.innerHTML = question;
             document.getElementById("answer-text")!.innerHTML = "Loading...";
+            document.getElementsByClassName("regenerate-button")[0].classList.add("hidden");
 
             // send the request to the AI21 API
             fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
@@ -90,8 +91,13 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
                 // update the UI with the answer
                 var answer = respString.completions[0].data.text;
                 document.getElementById("answer-text")!.innerHTML = answer;
+                document.getElementsByClassName("regenerate-button")[0].classList.remove("hidden");
             });
             return;
         });
 
+});
+
+document.getElementsByClassName("regenerate-button")[0].addEventListener("click", (event) => {
+    (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
