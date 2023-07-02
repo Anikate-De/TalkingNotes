@@ -134,6 +134,7 @@ strong {
 
 .hidden {
     display: none;
+    visibility: hidden;
 }
 
 .header {
@@ -201,21 +202,31 @@ strong {
 }
 
 .regenerate-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
     padding: 6px 12px;
     height: 34px;
     border: none;
-    background: #afe1af8b;
     border-radius: 20px;
     cursor: pointer;
     margin-top: 10px;
-}
 
-.regenerate-button:hover {
-    background: #afe1afdd;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
 }
 
 .regenerate-button:hover .svg-icon {
     animation: spin 2s linear infinite;
+}
+
+.classic {
+    background: #afe1af8b;
+}
+
+.classic:hover {
+    background: #afe1afdd;
 }
 
 @keyframes spin {
@@ -228,9 +239,44 @@ strong {
     }
 }
 
-.answer-container {
+.row {
     display: flex;
     flex-direction: row;
     width: 100%;
     align-items: center;
+}
+
+.creative {
+    background: #b6d0e29f;
+
+}
+
+.creative:hover {
+    background: #b6d0e2c4;
+}
+
+.relevant {
+    background: #eedc8254;
+}
+
+.relevant:hover {
+    background: #eedc8297;
+}
+
+.padded {
+    padding-left: 50px;
+    gap: 12px;
+}
+
+.creative span {
+    color: #0096FF;
+}
+
+.relevant span {
+    color: #eab410;
+}
+
+.regenerate-controls-header {
+    padding-left: 26px;
+    margin-top: 10px;
 }
