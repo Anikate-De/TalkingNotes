@@ -1,3 +1,6 @@
+let creative=false;
+let relevant=false;
+
 // sends a message to the background script to check if the user is on Google Keep
 // this is fired as soon as the popup is opened
 chrome.runtime.sendMessage({
@@ -26,6 +29,8 @@ document.getElementsByTagName('input')[0].addEventListener("keypress", (event) =
 });
 
 document.getElementsByClassName("sendButton")[0].addEventListener("click", (event) => {
+    
+    creative=false, relevant=false;
 
     chrome.runtime.sendMessage(
         {
@@ -42,10 +47,13 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
             document.getElementsByClassName("conversation-content")[0].classList.remove("hidden");
             document.getElementById("question-text")!.innerHTML = question;
             document.getElementById("answer-text")!.innerHTML = "Loading...";
-            document.getElementsByClassName("regenerate-button")[0].classList.add("hidden");
+            document.getElementsByClassName("classic")[0].classList.add("hidden");
+            document.getElementsByClassName("regenerate-controls-header")[0].classList.add("hidden");
+            document.getElementsByClassName("creative")[0].classList.add("hidden");
+            document.getElementsByClassName("relevant")[0].classList.add("hidden");
 
             // send the request to the AI21 API
-            fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
+            fetch("https://api.ai21.com/studio/v1/j2-ultra/complete", {
                 headers: {
                     "Authorization": "Bearer " + process.env.API_KEY,
                     "Content-Type": "application/json"
@@ -54,9 +62,9 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
                     "prompt": entireText,
                     "numResults": 1,
                     "maxTokens": 200,
-                    "temperature": 0.7,
+                     "temperature": creative ? 1 : 0.5,
                     "topKReturn": 0,
-                    "topP": 1,
+                    "topP": relevant ? 1 : 0.5,
                     "countPenalty": {
                         "scale": 0,
                         "applyToNumbers": false,
@@ -91,13 +99,29 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
                 // update the UI with the answer
                 var answer = respString.completions[0].data.text;
                 document.getElementById("answer-text")!.innerHTML = answer;
-                document.getElementsByClassName("regenerate-button")[0].classList.remove("hidden");
+                document.getElementsByClassName("classic")[0].classList.remove("hidden");
+                document.getElementsByClassName("regenerate-controls-header")[0].classList.remove("hidden");
+                document.getElementsByClassName("creative")[0].classList.remove("hidden");
+                document.getElementsByClassName("relevant")[0].classList.remove("hidden");
+                
+                creative=false, relevant=false;
             });
             return;
         });
 
 });
 
-document.getElementsByClassName("regenerate-button")[0].addEventListener("click", (event) => {
+document.getElementsByClassName("classic")[0].addEventListener("click", (event) => {
     (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
+
+document.getElementsByClassName("creative")[0].addEventListener("click", (event) => {
+    creative=true;
+    (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
+});
+
+document.getElementsByClassName("relevant")[0].addEventListener("click", (event) => {
+    relevant=true;
+    (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
+});
+
