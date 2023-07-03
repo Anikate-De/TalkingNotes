@@ -2,9 +2,13 @@
 function decodeEscapeSequence(str: string): string {
 
     // convert hex code to characters
-    return str.replace(/\\x([0-9A-Fa-f]{2})/g, function () {
+    var formattedStr = str.replace(/\\x([0-9A-Fa-f]{2})/g, function () {
         return String.fromCharCode(parseInt(arguments[1], 16));
     });
+
+    formattedStr = formattedStr.replace(/\\\\/g, '\\');
+
+    return formattedStr;
 };
 
 // function that scrapes the notes from the Google Keep webpage
@@ -78,6 +82,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 func: scrapeGoogleKeep,
                 args: []
             });
+
+            console.log(resp[0].result);
 
             sendResponse(resp[0].result);
         })();
