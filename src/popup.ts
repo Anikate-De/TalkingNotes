@@ -1,5 +1,5 @@
-let creative=false;
-let relevant=false;
+let creative = false;
+let relevant = false;
 
 // sends a message to the background script to check if the user is on Google Keep
 // this is fired as soon as the popup is opened
@@ -29,8 +29,6 @@ document.getElementsByTagName('input')[0].addEventListener("keypress", (event) =
 });
 
 document.getElementsByClassName("sendButton")[0].addEventListener("click", (event) => {
-    
-    creative=false, relevant=false;
 
     chrome.runtime.sendMessage(
         {
@@ -62,7 +60,7 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
                     "prompt": entireText,
                     "numResults": 1,
                     "maxTokens": 200,
-                     "temperature": creative ? 1 : 0.5,
+                    "temperature": creative ? 1 : 0.5,
                     "topKReturn": 0,
                     "topP": relevant ? 1 : 0.5,
                     "countPenalty": {
@@ -103,8 +101,8 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
                 document.getElementsByClassName("regenerate-controls-header")[0].classList.remove("hidden");
                 document.getElementsByClassName("creative")[0].classList.remove("hidden");
                 document.getElementsByClassName("relevant")[0].classList.remove("hidden");
-                
-                creative=false, relevant=false;
+
+                creative = false, relevant = false;
             });
             return;
         });
@@ -116,12 +114,12 @@ document.getElementsByClassName("classic")[0].addEventListener("click", (event) 
 });
 
 document.getElementsByClassName("creative")[0].addEventListener("click", (event) => {
-    creative=true;
+    creative = true;
     (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
 
 document.getElementsByClassName("relevant")[0].addEventListener("click", (event) => {
-    relevant=true;
+    relevant = true;
     (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
 
