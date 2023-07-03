@@ -3,7 +3,6 @@ let relevant=false;
 
 // sends a message to the background script to check if the user is on Google Keep
 // this is fired as soon as the popup is opened
-
 chrome.runtime.sendMessage({
     message: "popupOpened"
 }, (response) => {
@@ -54,7 +53,7 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
             document.getElementsByClassName("relevant")[0].classList.add("hidden");
 
             // send the request to the AI21 API
-            fetch("https://api.ai21.com/studio/v1/j2-mid/complete", {
+            fetch("https://api.ai21.com/studio/v1/j2-ultra/complete", {
                 headers: {
                     "Authorization": "Bearer " + process.env.API_KEY,
                     "Content-Type": "application/json"
@@ -113,17 +112,16 @@ document.getElementsByClassName("sendButton")[0].addEventListener("click", (even
 });
 
 document.getElementsByClassName("classic")[0].addEventListener("click", (event) => {
-    creative=false, relevant=false;
     (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
 
 document.getElementsByClassName("creative")[0].addEventListener("click", (event) => {
-    creative=true, relevant=false;
+    creative=true;
     (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
 
 document.getElementsByClassName("relevant")[0].addEventListener("click", (event) => {
-    relevant=true, creative=false;
+    relevant=true;
     (document.getElementsByClassName("sendButton")[0] as HTMLButtonElement).click();
 });
 
