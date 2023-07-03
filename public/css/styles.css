@@ -105,16 +105,14 @@ input {
 }
 
 #hero-image {
-    height: 120px;
     width: 120px;
 }
 
 .small#hero-image {
-    height: 48px;
     width: 48px;
     margin-left: 16px;
     margin-right: 10px;
-    margin-top: 4px;
+    margin-top: 10px;
 }
 
 h1 {
