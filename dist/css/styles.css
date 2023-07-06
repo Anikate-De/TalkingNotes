@@ -1,0 +1,280 @@
+body {
+    background-color: rgb(232, 232, 232);
+    width: 500px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    overflow: hidden;
+    /* padding: 4px 15px; */
+    margin: 10px;
+    width: calc(100% - 20px);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.initial-content {
+    margin-top: 20px;
+    height: 400px;
+    flex-direction: column;
+}
+
+.error-content {
+    margin-top: 20px;
+    height: 400px;
+    flex-direction: column;
+}
+
+
+.conversation-content {
+    margin-top: 20px;
+    height: 400px;
+    flex-direction: column;
+    justify-content: start;
+    font-weight: 500;
+    overflow-y: scroll;
+    padding-bottom: 10px;
+}
+
+.question-controls {
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding: 0px 10px;
+    font-family: 'Poppins', sans-serif;
+    caret-color: rgba(96, 201, 248, 1);
+}
+
+.searchLabel {
+    cursor: text;
+    padding: 0px 2px;
+    text-align: center;
+    margin: 0 12px;
+    margin-left: 20px;
+}
+
+.icon {
+    width: 13px;
+}
+
+.border {
+    height: 40%;
+    width: 1.3px;
+    background-color: rgb(223, 223, 223);
+}
+
+.hr-border {
+    width: 90%;
+    height: 1.3px;
+    background-color: rgb(223, 223, 223);
+}
+
+.sendButton {
+    padding: 0 15px;
+    padding-right: 20px;
+    border: none;
+    background-color: transparent;
+    height: 40px;
+    cursor: pointer;
+    transition-duration: .3s;
+}
+
+.searchIcon {
+    color: rgb(114, 114, 114);
+}
+
+.sendIcon path {
+    fill: rgba(6, 90, 157, 1);
+}
+
+.sendButton:hover {
+    background-color: rgb(223, 245, 255);
+    transition-duration: .3s;
+}
+
+#hero-image {
+    width: 120px;
+}
+
+.small#hero-image {
+    width: 48px;
+    margin-left: 16px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+h1 {
+    margin: 20px auto 6px;
+    font-weight: 500;
+}
+
+p {
+    margin: 2px auto;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+}
+
+strong {
+    font-weight: 700;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.header {
+    margin: 10px auto 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
+
+.bubble {
+    width: 70%;
+    border-radius: 10px;
+    margin: 10px 24px 0;
+    background: rgb(6, 144, 230);
+    color: #fff;
+    padding: 8px;
+    text-align: start;
+    position: relative;
+}
+
+.question-bubble {
+    background: rgba(6, 90, 157, 1);
+    align-self: flex-end;
+}
+
+.question-bubble:after {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid rgba(6, 90, 157, 1);
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(6, 90, 157, 1);
+    right: -8px;
+    top: 0px;
+}
+
+.answer-bubble {
+    align-self: flex-start;
+    margin-right: 12px;
+}
+
+.answer-bubble:after {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid rgb(6, 144, 230);
+    border-top: 10px solid rgb(6, 144, 230);
+    left: -8px;
+    top: 0px;
+}
+
+.red {
+    color: red;
+}
+
+.large-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 100px !important;
+}
+
+.regenerate-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    height: 34px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+}
+
+.regenerate-button:hover .svg-icon {
+    animation: spin 2s linear infinite;
+}
+
+.classic {
+    background: #afe1af8b;
+}
+
+.classic:hover {
+    background: #afe1afdd;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.creative {
+    background: #b6d0e29f;
+
+}
+
+.creative:hover {
+    background: #b6d0e2c4;
+}
+
+.relevant {
+    background: #eedc8254;
+}
+
+.relevant:hover {
+    background: #eedc8297;
+}
+
+.padded {
+    padding-left: 50px;
+    gap: 12px;
+}
+
+.creative span {
+    color: #0096FF;
+}
+
+.relevant span {
+    color: #eab410;
+}
+
+.regenerate-controls-header {
+    padding-left: 26px;
+    margin-top: 10px;
+}
