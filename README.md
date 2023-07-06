@@ -4,14 +4,11 @@
 
 Please note that this project was created for the [Plug into AI with AI21 Hackathon 2023](https://lablab.ai/event/plug-into-ai-with-ai21) by team [infinitely-same](https://lablab.ai/event/plug-into-ai-with-ai21/infinitely-same). Future work may be done on this project, but it is not a priority at the moment.
 
-**The `dist` directory has been temporarily uploaded for the Hackathon, IGNORE STEPS 0-6.
-This directory will be removed later as it contains sensitive information.**
-
 ## Description
 
 A chrome extension that lets you talk back to your Google Keep Notes using AI21 Jumbo models. Ask questions, suggestions, and have a conversation with your notes.
 
-## 💻 Installation (ignore steps 0-6, if you're a Hackathon Panelist)
+## 💻 Installation
 
 0. **(Pre-requisite)** Install [Node.js](https://nodejs.org/en/download/) and add it to your path
 
